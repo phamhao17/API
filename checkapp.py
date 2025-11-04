@@ -1,16 +1,16 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 # Page config
 st.set_page_config(page_title="Weather App", layout="centered")
-st.title("🌤 Weather Checker")
+st.title("🌤 Weather Checker with Map")
 
+# User input
 city = st.text_input("Enter a city name:")
 
 if city:
     api_key = "482b8f9d1330689c2a4569cd9a857a16"
-    
-    # Use HTTPS here
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
 
     response = requests.get(url)
@@ -19,12 +19,20 @@ if city:
         data = response.json()
         temp = data["main"]["temp"]
         weather = data["weather"][0]["main"]
+        lat = data["coord"]["lat"]
+        lon = data["coord"]["lon"]
 
+        # Display weather info
         st.write(f"🌡 Temperature in {city}: {temp} °C")
-
+        st.write(f"🌍 Location: Latitude {lat}, Longitude {lon}")
         if "rain" in weather.lower():
             st.write("☔ It is raining 🌧")
         else:
             st.write("☀ No rain ☀")
+        
+        # Display map
+        df = pd.DataFrame({"lat": [lat], "lon": [lon]})
+        st.map(df)
+
     else:
         st.error("City not found. Please enter a valid city name.")
