@@ -9,13 +9,10 @@ city = st.text_input("Enter a city name:")
 
 if city:
     api_key = "482b8f9d1330689c2a4569cd9a857a16"
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
 
     response = requests.get(url)
     
-    # Debugging: show API response
-    # st.write(response.json())
-
     if response.status_code == 200:
         data = response.json()
         temp = data["main"]["temp"]
