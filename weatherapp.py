@@ -1,30 +1,30 @@
 import streamlit as st
 import requests
 
-# Set page title
+# Page config
 st.set_page_config(page_title="Weather App", layout="centered")
 st.title("🌤 Weather Checker")
 
-# User input: city name
+# Input: city name
 city = st.text_input("Enter a city name:")
 
 if city:
-    # OpenWeatherMap API setup
-    api_key = "YOUR_API_KEY_HERE"
+    # OpenWeatherMap API
+    api_key = "482b8f9d1330689c2a4569cd9a857a16"  # Replace with your API key
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
 
     response = requests.get(url)
-    
+
     if response.status_code == 200:
         data = response.json()
         temp = data["main"]["temp"]
         weather = data["weather"][0]["main"]  # e.g., Rain, Clear, Clouds
 
-        # Output temperature
-        st.write(f"🌡 Temperature: {temp} °C")
+        # Display temperature
+        st.write(f"🌡 Temperature in {city}: {temp} °C")
 
-        # Output raining or not
-        if weather.lower() == "rain":
+        # Check if raining
+        if "rain" in weather.lower():
             st.write("☔ It is raining 🌧")
         else:
             st.write("☀ No rain ☀")
